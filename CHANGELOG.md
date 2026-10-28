@@ -4,6 +4,18 @@
 
 <!-- next version -->
 
+## v0.151.0
+
+### Added
+
+- `frontend`: Add the Badge component. ([#37](https://github.com/SigNoz/signoz/pull/37))
+
+### Changed
+
+- `logs`: Show the log line count in the logs explorer. ([#35](https://github.com/SigNoz/signoz/pull/35))
+
+<!-- previous-version -->
+
 ## v0.150.0
 
 ### Added
