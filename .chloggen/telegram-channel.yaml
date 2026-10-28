@@ -1,6 +1,0 @@
-change_type: new_component
-component: alerts
-note: Send alert notifications to Telegram.
-issues: [13074, 13119]
-subtext: |
-  Add a Telegram channel under Settings > Notification Channels.

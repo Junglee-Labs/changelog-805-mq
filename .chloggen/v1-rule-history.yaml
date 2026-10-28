@@ -1,6 +1,0 @@
-change_type: breaking
-component: alerts
-note: Remove the v1 alert rule history endpoints. They now return `404 Not Found`.
-issues: [12163]
-subtext: |
-  Use `GET /api/v2/rules/{id}/history/*` instead.

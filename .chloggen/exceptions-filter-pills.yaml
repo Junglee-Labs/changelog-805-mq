@@ -1,4 +1,0 @@
-change_type: bug_fix
-component: exceptions
-note: Keep the filter pills on the Exceptions page when you run the query.
-issues: [13204]

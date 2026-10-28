@@ -4,6 +4,34 @@
 
 <!-- next version -->
 
+## v0.147.0
+
+### Breaking changes
+
+- `alerts`: Remove the v1 alert rule history endpoints. They now return `404 Not Found`. ([#12163](https://github.com/SigNoz/signoz/pull/12163))
+  Use `GET /api/v2/rules/{id}/history/*` instead.
+  
+
+### Added
+
+- `alerts`: Send alert notifications to Telegram. ([#13074](https://github.com/SigNoz/signoz/pull/13074), [#13119](https://github.com/SigNoz/signoz/pull/13119))
+  Add a Telegram channel under Settings > Notification Channels.
+  
+- `explorer`: Save explorer queries as views, and open them from the quick filters sidebar. ([#13125](https://github.com/SigNoz/signoz/pull/13125), [#13022](https://github.com/SigNoz/signoz/pull/13022))
+
+### Changed
+
+- `alerts`: Clone an alert rule with the new clone API. ([#13093](https://github.com/SigNoz/signoz/pull/13093))
+- `integrations`: Collect logs from Google Cloud with the GCP integration. ([#13184](https://github.com/SigNoz/signoz/pull/13184))
+  Logs need the manual setup.
+  
+
+### Fixed
+
+- `exceptions`: Keep the filter pills on the Exceptions page when you run the query. ([#13204](https://github.com/SigNoz/signoz/pull/13204))
+
+<!-- previous-version -->
+
 ## v0.1.0
 
 ### Breaking changes

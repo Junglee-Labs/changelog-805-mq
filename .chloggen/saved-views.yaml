@@ -1,4 +1,0 @@
-change_type: new_component
-component: explorer
-note: Save explorer queries as views, and open them from the quick filters sidebar.
-issues: [13125, 13022]
