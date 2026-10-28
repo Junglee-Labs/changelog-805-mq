@@ -1,0 +1,4 @@
+change_type: new_component
+component: traces
+note: Export a trace as JSON from the trace details page.
+issues: [31]
