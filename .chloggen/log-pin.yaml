@@ -1,4 +1,0 @@
-change_type: enhancement
-component: logs
-note: Pin a log line to the top of the logs explorer.
-issues: [40]

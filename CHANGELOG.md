@@ -4,6 +4,14 @@
 
 <!-- next version -->
 
+## v0.152.0
+
+### Changed
+
+- `logs`: Pin a log line to the top of the logs explorer. ([#40](https://github.com/SigNoz/signoz/pull/40))
+
+<!-- previous-version -->
+
 ## v0.151.0
 
 ### Added
