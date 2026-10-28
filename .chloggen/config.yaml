@@ -12,3 +12,6 @@ components:
   - metrics
   - query-service
   - frontend
+  - explorer
+  - integrations
+  - exceptions

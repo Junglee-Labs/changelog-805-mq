@@ -1,0 +1,4 @@
+change_type: enhancement
+component: alerts
+note: Clone an alert rule with the new clone API.
+issues: [13093]

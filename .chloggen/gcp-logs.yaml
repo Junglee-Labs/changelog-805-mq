@@ -1,0 +1,6 @@
+change_type: enhancement
+component: integrations
+note: Collect logs from Google Cloud with the GCP integration.
+issues: [13184]
+subtext: |
+  Logs need the manual setup.
