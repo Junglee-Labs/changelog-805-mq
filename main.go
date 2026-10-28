@@ -5,3 +5,4 @@ func main() {}
 // v1 removal
 // trace export
 // count
+// pin
