@@ -4,6 +4,18 @@
 
 <!-- next version -->
 
+## v0.150.0
+
+### Added
+
+- `traces`: Export a trace as JSON from the trace details page. ([#31](https://github.com/SigNoz/signoz/pull/31))
+
+### Changed
+
+- `alerts`: Mute an alert rule for a time window from the alert list. ([#1](https://github.com/SigNoz/signoz/pull/1))
+
+<!-- previous-version -->
+
 ## v0.149.0
 
 ### Changed
