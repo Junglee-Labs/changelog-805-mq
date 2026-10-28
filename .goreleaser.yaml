@@ -11,4 +11,3 @@ release:
   name_template: "v{{ .Version }}"
   draft: false
   prerelease: auto
-  mode: replace
