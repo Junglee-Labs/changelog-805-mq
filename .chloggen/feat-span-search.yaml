@@ -1,0 +1,4 @@
+change_type: enhancement
+component: traces
+note: Search spans by attribute value in the trace view.
+issues: [2]
