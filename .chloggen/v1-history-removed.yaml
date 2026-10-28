@@ -1,0 +1,7 @@
+change_type: breaking
+component: alerts
+note: Remove the v1 alert history endpoints. They now return `404 Not Found`.
+issues: [4]
+subtext: |
+  Switch to `GET /api/v2/rules/{id}/history/*`. See the migration guide.
+change_logs: [user]
