@@ -1,0 +1,4 @@
+change_type: enhancement
+component: logs
+note: Show the log line count in the logs explorer.
+issues: [35]
