@@ -3,3 +3,19 @@
 # Changelog
 
 <!-- next version -->
+
+## v0.1.0
+
+### Breaking changes
+
+- `alerts`: Remove the v1 alert history endpoints. They now return `404 Not Found`. ([#4](https://github.com/crazyuploader/changelog-805-test/pull/4))
+  Switch to `GET /api/v2/rules/{id}/history/*`. See the migration guide.
+  
+
+### Added
+
+- `alerts`: Send alert notifications to Telegram. ([#3](https://github.com/crazyuploader/changelog-805-test/pull/3))
+  Add a Telegram channel under Settings > Notification channels with a bot token and chat ID.
+  
+
+<!-- previous-version -->
