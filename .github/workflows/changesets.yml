@@ -1,0 +1,25 @@
+name: changesets
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, labeled, unlabeled]
+    branches: [main]
+    paths: ['packages/**', '.changeset/**']
+
+permissions:
+  contents: read
+
+jobs:
+  changeset:
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'skip-changelog') && github.actor != 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - name: changeset-status
+        run: npx changeset status --since=origin/main
