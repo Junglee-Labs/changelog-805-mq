@@ -4,6 +4,20 @@
 
 <!-- next version -->
 
+## v0.148.0
+
+### Added
+
+- `dashboards`: Add the heatmap panel to dashboards. ([#10](https://github.com/SigNoz/signoz/pull/10))
+  Pick Heatmap when you add a panel. It shows how values spread over time.
+  
+
+### Fixed
+
+- `logs`: Fix the log search box losing focus. ([#1](https://github.com/SigNoz/signoz/pull/1))
+
+<!-- previous-version -->
+
 ## v0.147.0
 
 ### Breaking changes
