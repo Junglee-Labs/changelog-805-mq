@@ -1,0 +1,113 @@
+# Reusable changelog check, adapted from open-telemetry/shared-workflows chloggen.yml (link check removed).
+# In SigNoz this file would live in signoz/primus.workflows.
+name: chloggen
+
+on:
+  workflow_call:
+    inputs:
+      skip-title-marker:
+        description: 'Substring in the PR title that skips the check. Empty disables it.'
+        required: false
+        default: ''
+        type: string
+      skip-labels:
+        description: 'Comma-separated PR labels that skip the check.'
+        required: false
+        default: 'skip-changelog,dependencies'
+        type: string
+      skip-actors:
+        description: 'Comma-separated actors for which the job is skipped.'
+        required: false
+        default: 'dependabot[bot],renovate[bot]'
+        type: string
+
+permissions: {}
+
+jobs:
+  changelog:
+    name: changelog
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && !contains(format(',{0},', inputs.skip-actors), format(',{0},', github.actor)) }}
+    permissions:
+      contents: read
+      pull-requests: read
+    env:
+      SKIP_TITLE_MARKER: ${{ inputs.skip-title-marker }}
+      SKIP_LABELS: ${{ inputs.skip-labels }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: skip-check
+        id: skip_check
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_LABELS_JSON: ${{ toJSON(github.event.pull_request.labels.*.name) }}
+        run: |
+          set -euo pipefail
+          skip=false
+          if [[ -n "$SKIP_TITLE_MARKER" && "$PR_TITLE" == *"$SKIP_TITLE_MARKER"* ]]; then
+            skip=true
+          fi
+          if [[ "$skip" == "false" ]]; then
+            IFS=',' read -ra skip_labels <<< "$SKIP_LABELS"
+            for label in "${skip_labels[@]}"; do
+              label="$(echo "$label" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+              if [[ -n "$label" ]] && jq -e --arg label "$label" 'index($label) != null' <<< "$PR_LABELS_JSON" > /dev/null; then
+                skip=true
+                break
+              fi
+            done
+          fi
+          echo "skip=$skip" >> "$GITHUB_OUTPUT"
+          if [[ "$skip" == "true" ]]; then echo "Changelog check skipped by label or title marker."; fi
+
+      - name: changed-files
+        id: file_changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            changelogUpdated:
+              - './CHANGELOG*.md'
+            chloggenAdded:
+              - added: './.chloggen/*.yaml'
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: no-direct-changelog-edit
+        if: steps.skip_check.outputs.skip == 'false'
+        env:
+          CHANGELOG_UPDATED: ${{ steps.file_changes.outputs.changelogUpdated }}
+        run: |
+          if [[ "$CHANGELOG_UPDATED" == "true" ]]; then
+            echo "CHANGELOG.md should not be edited directly. Add a .yaml file to ./.chloggen/ instead (make chlog-new)."
+            echo "If this PR needs no changelog entry, add one of these labels: $SKIP_LABELS"
+            exit 1
+          fi
+
+      - name: entry-added
+        if: steps.skip_check.outputs.skip == 'false'
+        env:
+          CHLOGGEN_ADDED: ${{ steps.file_changes.outputs.chloggenAdded }}
+        run: |
+          if [[ "$CHLOGGEN_ADDED" != "true" ]]; then
+            echo "No changelog entry was added to ./.chloggen/. Run: make chlog-new FILENAME=<short-name>"
+            echo "If this PR needs no changelog entry, add one of these labels: $SKIP_LABELS"
+            exit 1
+          fi
+
+      - name: validate
+        if: steps.skip_check.outputs.skip == 'false'
+        run: make chlog-validate
+
+      - name: preview
+        if: steps.skip_check.outputs.skip == 'false'
+        run: |
+          {
+            echo "### Changelog preview"
+            echo
+            make --no-print-directory chlog-preview | sed '1d'
+          } >> "$GITHUB_STEP_SUMMARY"
