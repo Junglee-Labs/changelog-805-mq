@@ -1,0 +1,4 @@
+change_type: bug_fix
+component: logs
+note: Fix the log search box losing focus.
+issues: [1]
