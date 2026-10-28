@@ -1,4 +1,0 @@
-change_type: bug_fix
-component: logs
-note: Export logs to CSV without dropping rows that have commas.
-issues: [1]

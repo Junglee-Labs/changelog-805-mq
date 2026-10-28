@@ -4,6 +4,14 @@
 
 <!-- next version -->
 
+## v0.148.1
+
+### Fixed
+
+- `logs`: Export logs to CSV without dropping rows that have commas. ([#1](https://github.com/SigNoz/signoz/pull/1))
+
+<!-- previous-version -->
+
 ## v0.148.0
 
 ### Added
