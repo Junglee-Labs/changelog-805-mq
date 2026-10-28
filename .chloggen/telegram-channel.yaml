@@ -1,0 +1,7 @@
+change_type: new_component
+component: alerts
+note: Send alert notifications to Telegram.
+issues: [3]
+subtext: |
+  Add a Telegram channel under Settings > Notification channels with a bot token and chat ID.
+change_logs: [user]
