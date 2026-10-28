@@ -10,6 +10,11 @@ on:
         required: false
         default: ''
         type: string
+      skip-title-pattern:
+        description: 'Bash extended regex on the PR title that skips the check. Empty disables it.'
+        required: false
+        default: ''
+        type: string
       skip-labels:
         description: 'Comma-separated PR labels that skip the check.'
         required: false
@@ -34,6 +39,7 @@ jobs:
     env:
       SKIP_TITLE_MARKER: ${{ inputs.skip-title-marker }}
       SKIP_LABELS: ${{ inputs.skip-labels }}
+      SKIP_TITLE_PATTERN: ${{ inputs.skip-title-pattern }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -48,6 +54,9 @@ jobs:
           set -euo pipefail
           skip=false
           if [[ -n "$SKIP_TITLE_MARKER" && "$PR_TITLE" == *"$SKIP_TITLE_MARKER"* ]]; then
+            skip=true
+          fi
+          if [[ -n "$SKIP_TITLE_PATTERN" && "$PR_TITLE" =~ $SKIP_TITLE_PATTERN ]]; then
             skip=true
           fi
           if [[ "$skip" == "false" ]]; then
