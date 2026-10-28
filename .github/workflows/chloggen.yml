@@ -1,5 +1,5 @@
 # Reusable changelog check, adapted from open-telemetry/shared-workflows chloggen.yml (link check removed).
-# In SigNoz this file would live in signoz/primus.workflows.
+# A shared copy of this workflow can live in a central workflows repo.
 name: chloggen
 
 on:

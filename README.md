@@ -1,4 +1,7 @@
 # changelog-805-test
 
-Throwaway test for SigNoz echo-pod#805: a per-PR changelog entry check with chloggen, and a release that turns the entries into the GitHub release notes.
-Internal test notes.
+A test of a per-PR changelog check with [chloggen](https://github.com/open-telemetry/opentelemetry-go-build-tools/tree/main/chloggen):
+
+- Each user-facing PR adds a YAML entry in `.chloggen/`. The `changelog` workflow fails the PR without one, unless it has the `skip-changelog` label.
+- The `prereleaser` workflow runs `make chlog-update`, which writes the new section into CHANGELOG.md.
+- The `releaser` workflow runs on a version tag and puts that section into the GitHub release notes.
