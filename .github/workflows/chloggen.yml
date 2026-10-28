@@ -80,7 +80,7 @@ jobs:
             changelogUpdated:
               - './CHANGELOG*.md'
             chloggenAdded:
-              - added: './.chloggen/*.yaml'
+              - added|modified: './.chloggen/*.yaml'
 
       - uses: actions/setup-go@v5
         with:
@@ -103,7 +103,7 @@ jobs:
           CHLOGGEN_ADDED: ${{ steps.file_changes.outputs.chloggenAdded }}
         run: |
           if [[ "$CHLOGGEN_ADDED" != "true" ]]; then
-            echo "No changelog entry was added to ./.chloggen/. Run: make chlog-new FILENAME=<short-name>"
+            echo "No changelog entry was added or edited in ./.chloggen/. Run: make chlog-new FILENAME=<short-name>"
             echo "If this PR needs no changelog entry, add one of these labels: $SKIP_LABELS"
             exit 1
           fi

@@ -4,6 +4,8 @@ on:
   pull_request:
     types: [opened, reopened, synchronize, edited, labeled, unlabeled]
     branches: [main]
+  merge_group:
+    types: [checks_requested]
 
 permissions: {}
 
@@ -15,4 +17,4 @@ jobs:
     uses: ./.github/workflows/chloggen.yml
     with:
       skip-labels: 'skip-changelog,dependencies'
-      skip-title-pattern: '^(chore|ci|test|docs)(\([^)]*\))?!?: '
+      skip-title-pattern: '^((chore|ci|test|docs)(\([^)]*\))?!?: |[Rr]evert)'
