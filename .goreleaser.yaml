@@ -7,8 +7,6 @@ builds:
     env: [CGO_ENABLED=0]
 archives:
   - formats: [tar.gz]
-changelog:
-  disable: true
 release:
   name_template: "v{{ .Version }}"
   draft: false
