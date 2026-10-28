@@ -1,0 +1,36 @@
+name: goreleaser
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+      - name: extract-section
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          awk -v tag="## ${TAG}" '
+            $0 == tag { found = 1; next }
+            found && /<!-- previous-version -->/ { exit }
+            found { print }
+          ' CHANGELOG.md > "${RUNNER_TEMP}/notes.md"
+          if [[ ! -s "${RUNNER_TEMP}/notes.md" ]]; then echo "No section for ${TAG} in CHANGELOG.md"; exit 1; fi
+      - uses: goreleaser/goreleaser-action@v6
+        with:
+          version: '~> v2'
+          args: release --clean --release-notes ${{ runner.temp }}/notes.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
