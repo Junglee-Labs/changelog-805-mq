@@ -1,15 +1,10 @@
-# Reusable changelog check, adapted from open-telemetry/shared-workflows chloggen.yml (link check removed).
-# A shared copy of this workflow can live in a central workflows repo.
-name: chloggen
+# Shared changelog check. Lives in signoz/primus.workflows; each repo calls it.
+# Adapted from open-telemetry/shared-workflows chloggen.yml (link check removed).
+name: changelog
 
 on:
   workflow_call:
     inputs:
-      skip-title-marker:
-        description: 'Substring in the PR title that skips the check. Empty disables it.'
-        required: false
-        default: ''
-        type: string
       skip-title-pattern:
         description: 'Bash extended regex on the PR title that skips the check. Empty disables it.'
         required: false
@@ -37,7 +32,6 @@ jobs:
       contents: read
       pull-requests: read
     env:
-      SKIP_TITLE_MARKER: ${{ inputs.skip-title-marker }}
       SKIP_LABELS: ${{ inputs.skip-labels }}
       SKIP_TITLE_PATTERN: ${{ inputs.skip-title-pattern }}
     steps:
@@ -53,9 +47,6 @@ jobs:
         run: |
           set -euo pipefail
           skip=false
-          if [[ -n "$SKIP_TITLE_MARKER" && "$PR_TITLE" == *"$SKIP_TITLE_MARKER"* ]]; then
-            skip=true
-          fi
           if [[ -n "$SKIP_TITLE_PATTERN" && "$PR_TITLE" =~ $SKIP_TITLE_PATTERN ]]; then
             skip=true
           fi
@@ -70,7 +61,7 @@ jobs:
             done
           fi
           echo "skip=$skip" >> "$GITHUB_OUTPUT"
-          if [[ "$skip" == "true" ]]; then echo "Changelog check skipped by label or title marker."; fi
+          if [[ "$skip" == "true" ]]; then echo "Changelog check skipped by a label or the title pattern."; fi
 
       - name: changed-files
         id: file_changes
