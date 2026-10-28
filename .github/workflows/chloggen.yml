@@ -15,6 +15,11 @@ on:
         required: false
         default: 'skip-changelog,dependencies'
         type: string
+      go-version:
+        description: 'Go version for repos without a go.mod.'
+        required: false
+        default: 'stable'
+        type: string
       skip-actors:
         description: 'Comma-separated actors for which the job is skipped.'
         required: false
@@ -67,15 +72,23 @@ jobs:
         id: file_changes
         uses: dorny/paths-filter@v3
         with:
+          predicate-quantifier: 'every'
           filters: |
             changelogUpdated:
               - './CHANGELOG*.md'
             chloggenAdded:
               - added|modified: './.chloggen/*.yaml'
+              - '!./.chloggen/config.yaml'
+              - '!./.chloggen/TEMPLATE.yaml'
 
-      - uses: actions/setup-go@v5
+      - if: hashFiles('go.mod') != ''
+        uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
+      - if: hashFiles('go.mod') == ''
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ inputs.go-version }}
 
       - name: no-direct-changelog-edit
         if: steps.skip_check.outputs.skip == 'false'
