@@ -1,0 +1,6 @@
+change_type: new_component
+component: dashboards
+note: Add the heatmap panel to dashboards.
+issues: [10]
+subtext: |
+  Pick Heatmap when you add a panel. It shows how values spread over time.
