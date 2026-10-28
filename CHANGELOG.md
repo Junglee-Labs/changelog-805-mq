@@ -4,6 +4,14 @@
 
 <!-- next version -->
 
+## v0.149.0
+
+### Changed
+
+- `traces`: Search spans by attribute value in the trace view. ([#2](https://github.com/SigNoz/signoz/pull/2))
+
+<!-- previous-version -->
+
 ## v0.148.1
 
 ### Fixed
