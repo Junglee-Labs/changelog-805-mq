@@ -17,4 +17,4 @@ jobs:
     uses: ./.github/workflows/chloggen.yml
     with:
       skip-labels: 'skip-changelog,dependencies'
-      skip-title-pattern: '^((chore|ci|test|docs)(\([^)]*\))?!?: |[Rr]evert)'
+      skip-title-pattern: '^(chore|ci|test|docs)(\([^)]*\))?!?: '
