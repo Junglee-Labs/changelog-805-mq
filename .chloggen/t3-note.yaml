@@ -1,0 +1,4 @@
+change_type: new_component
+component: traces
+note: "feat(traces): add span pinning"
+issues: [5]
