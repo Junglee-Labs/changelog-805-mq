@@ -1,0 +1,4 @@
+change_type: new_component
+component: alerts
+note: Send alert notifications to Telegram.
+issues: [1]
