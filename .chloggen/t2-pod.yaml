@@ -1,0 +1,4 @@
+change_type: enhancement
+component: logs
+note: Filter logs by severity from the quick filters.
+issues: [625]
