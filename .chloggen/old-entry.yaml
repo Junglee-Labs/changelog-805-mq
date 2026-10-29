@@ -1,4 +1,4 @@
 change_type: enhancement
 component: logs
-note: Show the log body in the list view.
+note: Show the full log body in the logs list view.
 issues: [1]
