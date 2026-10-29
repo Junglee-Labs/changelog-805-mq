@@ -80,6 +80,11 @@ jobs:
               - added|modified: './.chloggen/*.yaml'
               - '!./.chloggen/config.yaml'
               - '!./.chloggen/TEMPLATE.yaml'
+            chloggenNew:
+              - added: './.chloggen/*.yaml'
+              - '!./.chloggen/config.yaml'
+              - '!./.chloggen/TEMPLATE.yaml'
+          list-files: shell
 
       - if: hashFiles('go.mod') != ''
         uses: actions/setup-go@v5
@@ -115,6 +120,34 @@ jobs:
       - name: validate
         if: steps.skip_check.outputs.skip == 'false'
         run: make chlog-validate
+
+      # issues links to SigNoz/<repo>/pull/<n>, so a pod issue number links to the wrong page.
+      # Only added entries need this PR's number; an edited entry keeps its original PR.
+      - name: entry-rules
+        if: steps.skip_check.outputs.skip == 'false'
+        env:
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          NEW_ENTRIES: ${{ steps.file_changes.outputs.chloggenNew_files }}
+          TOUCHED_ENTRIES: ${{ steps.file_changes.outputs.chloggenAdded_files }}
+        run: |
+          set -euo pipefail
+          title_re='^[a-z]+(\([^)]*\))?!?: '
+          fail=0
+          for f in $NEW_ENTRIES; do
+            if ! yq -e ".issues[] | select(. == ${PR_NUMBER})" "$f" > /dev/null 2>&1; then
+              echo "::error file=$f::Add this PR's number to issues: [${PR_NUMBER}]. Release notes link each number to a PR in this repo, so a pod issue number links to the wrong page."
+              fail=1
+            fi
+          done
+          for f in $TOUCHED_ENTRIES; do
+            note="$(yq -r '.note // ""' "$f")"
+            if [[ "$note" =~ $title_re || "${note,,}" == "${PR_TITLE,,}" ]]; then
+              echo "::error file=$f::The note reads like a PR title. Write what changed for users, for example: Send alert notifications to Telegram."
+              fail=1
+            fi
+          done
+          exit "$fail"
 
       - name: preview
         if: steps.skip_check.outputs.skip == 'false'
